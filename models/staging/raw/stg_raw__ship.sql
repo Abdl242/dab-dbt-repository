@@ -1,22 +1,23 @@
-with 
+  -- stg_raw__ship.sql
 
-source as (
+  with
 
-    select * from {{ source('raw', 'ship') }}
+  source as (
 
-),
+      select * from {{ source('raw', 'ship') }}
 
-ship as (
+  ),
 
-    select
-        orders_id,
-        shipping_fee,
-        shipping_fee_1,
-        logcost,
-        ship_cost
+  renamed as (
 
-    from source
+      select
+          orders_id,
+          shipping_fee,
+          logcost AS log_cost,
+          CAST(ship_cost AS INT64) AS ship_cost
 
-)
+      from source
 
-select * from ship
+  )
+
+  select * from renamed
